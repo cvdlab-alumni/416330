@@ -113,4 +113,4 @@ floor5 = COLOR(colors(127,51,0))(floor5)
 
 #unione di tutti i vari piani in semi 3D:
 two_and_half_model = STRUCT([floor1,floor2_2_5D,floor3_3D,floor4_3D,floor5])
-VIEW(two_and_half_model)
+#VIEW(two_and_half_model)
