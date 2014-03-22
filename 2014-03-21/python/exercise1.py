@@ -1,5 +1,11 @@
+'''
+Created on 21/mar/2014
+
+@author: Manuel
+'''
 
 from pyplasm import *
+import exercise4 as stair
 
 #funzione utilita' per i colori in pyplasm:
 def colors (r,g,b):
@@ -17,12 +23,7 @@ primabase = MKPOL([vertici, celle, None])
 base = PROD([primabase,Q(0.1)])
 
 #struttura delle scale:
-piano = CUBOID([0.29,9.0,0.19])
-scala = piano
-for i in range(16):
-    nuovascala = T(1)(-0.29*(i-1))(CUBOID([0.29,9.0,0.19*i]))
-    scala = STRUCT([scala,nuovascala])
-scala = T([2,1])([2.25,26.0])(scala)
+stairs = stair.stairs(16)
 
 #struttura del primo piano della struttura:
 v2 = [(0.1,0.1),(26.3,0.1),(0.1,13.4),(26.3,13.4),(26.3,2.24),(22.0,2.25),(22.0,0.1),(26.3,11.25),(22.0,11.25),(22.0,13.4)]
@@ -38,7 +39,7 @@ b4 = PROD([secondabase,Q(0.1)])
 b4 = T(3)(2.65)(b4)
 b5 = PROD([primabase,Q(0.1)])
 b5 = T(3)(2.75)(b5)
-floor1 = STRUCT([base,b5,b4,scala])
+floor1 = STRUCT([base,b5,b4,stairs])
 floor1 = COLOR(colors(192,192,192))(floor1)
 
 #definizione delle mura:
@@ -89,13 +90,13 @@ col2 = STRUCT([col2,T(1)(-2)]*9)
 col3 = T(2)(11.25)(col2)
 col4 = T(1)(-20)(rigacol)
 floor3 = STRUCT([rigacol,col2,col3,col4])
-floor3_3D = PROD([floor3,Q(11)])
+floor3_3D = PROD([floor3,Q(9)])
 floor3_3D = T(3)(2.95)(floor3_3D)
 floor3_3D = COLOR(colors(224,224,224))(floor3_3D)
 
 #definizione dei capitelli:
-capitello1 = T(3)(13.92)(colonna)
-capitello2 = T(3)(14.5)(piedistallo)
+capitello1 = T(3)(11.92)(colonna)
+capitello2 = T(3)(12.5)(piedistallo)
 capitello = JOIN([capitello1,capitello2])
 rigacapi = STRUCT([capitello, T(2)(2.25)]*6)
 capi2 = T(1)(-2)(capitello)
@@ -108,7 +109,7 @@ floor4_3D = COLOR(colors(145,149,148))(floor4_3D)
 #definizione del piano del tetto:
 floor5 = CUBOID([20.5,11.85])
 floor5 = T([2,1])([0.8125,0.75])(floor5)
-floor5 = T(3)(14.5)(floor5)
+floor5 = T(3)(12.5)(floor5)
 floor5 = COLOR(colors(127,51,0))(floor5)
 
 #unione di tutti i vari piani in semi 3D:

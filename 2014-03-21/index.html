@@ -1,12 +1,20 @@
  <html>
  <h1>Nome monumento: Maison Carrée   </h1>
- <h2><p>Nome: Manuel</p>
-     Cognome: De Iuliis  <br> </h2>
+ <h2>Nome,Cognome: Manuel De Iuliis <br> </h2>
      
 <h3> Matricola: 416330  </h3>
 
 <body>
+<p>argomento generale: <a href="http://en.wikipedia.org/wiki/History_of_architecture"> argomento </a></p>
 <p>riferimenti: <a href="http://it.wikipedia.org/wiki/Maison_Carr%C3%A9e"> informazioni</a> </p>
+
+<p>Note:</p>
+<p> Durante lo svolgimento dell'homework ho riscontrato anomalie con la funzione
+di VIEW(), in particolare se facevo due VIEW() dello stesso oggetto, una dopo
+l'altra, la struttura da visualizzare andava a perdere componenti random e non
+si visualizzava correttamente, per questo negli esercizi 1 e 2 ho commentato le
+VIEW() che mostravano i risultati dell'esercizio. Ho lasciato la VIEW() dell'esercizio
+numero 3 che visualizza il Maison Carrée completo. </p> 
 
 <p>Esercizio n°1: <a href="./python/exercise1.py">codice</a></p>
 per questo esercizio mi sono definito una funzione di utilità per convertire
@@ -15,8 +23,7 @@ passando come parametro i valori R,G,B del colore scelto. Successivamente sono
 andato a creare la base della struttura, andando a prendere i singoli punti e 
 creando un poligono, sono state creati vari basi con dimensioni "scalate" per
 cercare di replicare in modo fedele il podio della struttura, che sarebbe il 
-primo piano. A questo è stata aggiunta la scalinata, creata tramite una 
-traslazione in modo opportuno di cuboidi. Tutte le misure sono scalate dalla
+primo piano. Tutte le misure sono scalate dalla
 realtà con un fattore di 1 unità = 1 metro. Una volta definito il podio sono 
 andato a creare il piano "concettuale" contenente i piedistalli per le colonne, 
 le basi per le mura e la porta. Il piano successivo è rappresentato dalle 
@@ -34,6 +41,19 @@ in questo caso, così ho svolto l'esercizio nel modo seguente: ho usato le basi
 delle mura definite nell'esercizio precedente e per ciascun lato sono andato
 a definire il relativo muro dando la terza dimensione alla base, successivamente
 ho unito il tutto realizzando il modellino del Maison Carrée dove manca solo
-il tetto.    
+il tetto. 
+
+<p>Esercizio n°3: <a href="./python/exercise3.py">codice</a></p>
+In questo esercizio è avvenuta la creazione e l'assemblaggio completo del solido,
+come prima cosa è stato creato il tetto, che mancava, assemblando tra loro vari
+cuboidi di dimensione differente per creare la base, e il tetto vero e proprio 
+è stato composto da due piramidi, a quella maggiore è stata "sottratta" la 
+dimensione di quella minore per far sembrare che la maggiore contiene la minore 
+una volta assemblato il tutto. 
+
+<p>Esercizio n°4: <a href="./python/exercise4.py">codice</a></p>
+In questo esercizio ho definito una funzione per la creazione di una scala,
+creata tramite una traslazione in modo opportuno di cuboidi sono andato a generare
+la scalinata della struttura.   
   </body>
 </html>
