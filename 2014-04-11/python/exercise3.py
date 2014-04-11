@@ -31,6 +31,7 @@ grid5 = T(1)(34)(grid2)
 grid6 = T(1)(34)(grid3)
 grid7 = T(1)(34)(grid4)
 grid8 = T(1)(34)(grid5)
+grid8 = COLOR(colors(2,81,22))(grid8)
 grid9 = T(1)(34)(grid6)
 
 #definizione strisce pedonali:
@@ -41,6 +42,7 @@ stripe2 = T(1)(1)(stripe)
 stripe3 = T(1)(1)(stripe2)
 stripe4 = T(1)(1)(stripe3)
 stripes = STRUCT([stripe,stripe2,stripe3,stripe4])
+
 #definizione delle strade intorno al monumento:
 street = COLOR(BLACK)(CUBOID([4,98,0.2]))
 street1 = T(1)(30)(street)
@@ -101,7 +103,6 @@ palace2 = TOP([grid9,palace2])
 v3 = [[2,2],[14,2],[22,2],[2,14],[14,14],[14,22],[22,22]]
 cv3 = [[0,1,4,3,0],[1,4,5,6,2,1]]
 model3 = MKPOLS((v3,cv3))
-VIEW(SKEL_1(STRUCT(model3)))
 ev = face2edge(cv3)
 medges3 = (v3,ev)
 mfaces3 = (v3,cv3)
@@ -118,4 +119,4 @@ palace3 = TOP([grid3,palace3])
 
 neighborood = STRUCT([palace1,grid2,palace3,grid4,m3D,grid6,grid7,grid8,palace2,street1,street2,street3,street4,stripes])
 
-VIEW(neighborood)
+#VIEW(neighborood)

@@ -68,5 +68,5 @@ tetto8 = COLOR(colors(127,51,0))(tetto8)
 #creazione del modello solido:
 model3D = STRUCT([facciate,horizontal3D,porta,tetto8,tetto7])
 
-VIEW(model3D)
+#VIEW(model3D)
 
