@@ -89,6 +89,13 @@ def larRod(params):
         return V,[range(len(V))]
     return larRod0
 
+def larPizza(params):
+    r,R= params
+    def larPizza0(shape=[24,36]):
+        V,CV = checkModel(larCrown(params)(shape))
+        return V,[range(len(V))]
+    return larPizza0
+
 #funzione per definire una fontana di raggio dato
 #funzione per definire una fontana di raggio dato
 def laghetto (raggio):
@@ -121,21 +128,77 @@ def panchina ():
     p = STRUCT([p1,p2])
     bas = TOP([p,base])
     panchina = STRUCT([bas,schienale])
-    panchina = COLOR(colors(127,51,0))(panchina)
+    panchina = COLOR(colors(206,178,130))(panchina)
     return panchina
 
+#definizione di un semaforo di grandezza n e altezza h:
+def semaforo(n,h):
+    base = CYLINDER([0.5,h])(64)
+    base = COLOR(BLACK)(base)
+    cubo = CUBOID([n,n,n])
+    cubor = COLOR(GREEN)(cubo)
+    cuboc = COLOR(RED)(cubo)
+    cuboy = COLOR(YELLOW)(cubo)
+    cuboy = T(3)(n)(cuboy)
+    cuboc = T(3)(n*2)(cuboc)
+    ris = (STRUCT([cubor,cuboc,cuboy]))
+    skel = SKEL_1(ris)
+    p2 = COLOR(BLACK)(OFFSET([0.1,0.1,0.1])(skel))
+    ris = STRUCT([ris,p2])
+    return (TOP([base,ris]))
+
+ #definizione di una semplice giostra girevole per bambini:
+def giostra():
+    vertici = [(1,1),(1,6),(2.5,4.5),(3.5,1),(5,2),(6,1)]
+    celle = [[1,2,3],[1,3,4],[4,3,5],[4,5,6]]
+    triangolo = MKPOL([vertici, celle, None])
+    triangolo = R([2,3])(PI/2)(triangolo)
+    skel = SKEL_1(triangolo)
+    #VIEW(skel)
+    #VIEW(OFFSET([0.1,0.1,0.1])(SKEL_1(triangolo)))
+    sk2 = OFFSET([0.1,0.1,0.1])(skel)
+    facciata = sk2;
+    def ciclo(n):
+        facciata = sk2
+        angolo = (2.0/n)*PI
+        print angolo
+        for i in range(n):
+            app = angolo*i
+            print app
+            nuovafaccia = R([1,2])(angolo*i)(sk2)
+            facciata = COLOR(colors(38,118,167))(STRUCT([facciata,nuovafaccia]))
+        return facciata
+    base = CYLINDER([1.0,5.1])(8)
+    base = T(3)(1)(base)
+    base = COLOR(colors(210,234,236))(base)
+    return (STRUCT([base,ciclo(8)]))
+
+gio = giostra()
+basegio = STRUCT(MKPOLS(larPizza([0.5,6])([8,48])))
+basegio = COLOR(colors(206,178,130))(basegio)
+gio = TOP([basegio,gio])
+gio = TOP([grid7,gio])
+sem = semaforo(1,4)
+sem = T([1,2])([69,47])(sem)
+sem = T(3)(0.2)(sem)
 lago = laghetto(8)
 lago = TOP([grid8,lago])
 panchina()
 albero1 = T(3)(0.2)(albero(1.5,9))
+albero3 = T([1,2])([40,10])(albero1)
+albero4 = T(2)(6)(albero3)
+albero5 = T(2)(6)(albero4)
+albero6 = T(1)(18)(albero3)
+albero7 = T(1)(18)(albero4)
+albero8 = T(1)(18)(albero5)
 albero1 = T([1,2])([75,38])(albero1) 
 albero2 = T(2)(22)(albero1)
+alberi = STRUCT([albero1,albero2,albero3,albero4,albero5,albero6,albero7,albero8])
 panchina1 = panchina()
 panchina2 = T(1)(3)(panchina1)
 panchina3 = T(1)(3)(panchina2)
 panchine = STRUCT([panchina1,panchina2,panchina3]) 
 panchine = TOP([grid4,panchine])
-
   
-neighborood = STRUCT([panchine,albero1,albero2,palace1,grid2,palace3,m3D,grid6,grid7,lago,palace2,street1,street2,street3,street4,stripes])
-VIEW(neighborood)
+neighborood_complete = STRUCT([sem,panchine,alberi,palace1,palace4,palace3,m3D,grid6,gio,lago,palace2,street1,street2,street3,street4,stripes])
+VIEW(neighborood_complete)
