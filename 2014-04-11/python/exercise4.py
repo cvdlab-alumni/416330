@@ -6,7 +6,7 @@ Created on 11/apr/2014
 import exercise3
 from exercise3 import *
 
-#funzioni utilita':
+#funzioni utilita' relative all'utilizzo della libreria LAR-CC:
 def larMap(coordFuncs):
     def larMap0(domain):
         V,CV = domain
@@ -96,16 +96,15 @@ def larPizza(params):
         return V,[range(len(V))]
     return larPizza0
 
-#funzione per definire una fontana di raggio dato
-#funzione per definire una fontana di raggio dato
+#funzione per definire un laghetto di raggio dato
 def laghetto (raggio):
-   base = CYLINDER([raggio,1])(64)
-   b2 = CYLINDER([raggio-2,1])(64)
-   base = DIFF([base,b2])
-   base = COLOR(colors(192,198,186))(base)
-   acqua = CYLINDER([raggio-2,0.8])(64)
-   acqua = COLOR(colors(137,253,255))(acqua)
-   return STRUCT([base,acqua])
+    base = CYLINDER([raggio,1])(64)
+    b2 = CYLINDER([raggio-2,1])(64)
+    base = DIFF([base,b2])
+    base = COLOR(colors(192,198,186))(base)
+    acqua = CYLINDER([raggio-2,0.8])(64)
+    acqua = COLOR(colors(137,253,255))(acqua)
+    return STRUCT([base,acqua])
 #definizione di un albero di altezza h e raggio r:
 def albero(r,h):
     modeltronco = larCylinder([r,h])([32,1])
@@ -154,10 +153,7 @@ def giostra():
     triangolo = MKPOL([vertici, celle, None])
     triangolo = R([2,3])(PI/2)(triangolo)
     skel = SKEL_1(triangolo)
-    #VIEW(skel)
-    #VIEW(OFFSET([0.1,0.1,0.1])(SKEL_1(triangolo)))
     sk2 = OFFSET([0.1,0.1,0.1])(skel)
-    facciata = sk2;
     def ciclo(n):
         facciata = sk2
         angolo = (2.0/n)*PI
@@ -173,6 +169,7 @@ def giostra():
     base = COLOR(colors(210,234,236))(base)
     return (STRUCT([base,ciclo(8)]))
 
+#creazione e posizionamento degli elementi del vicinato:
 gio = giostra()
 basegio = STRUCT(MKPOLS(larPizza([0.5,6])([8,48])))
 basegio = COLOR(colors(206,178,130))(basegio)
@@ -199,6 +196,7 @@ panchina2 = T(1)(3)(panchina1)
 panchina3 = T(1)(3)(panchina2)
 panchine = STRUCT([panchina1,panchina2,panchina3]) 
 panchine = TOP([grid4,panchine])
-  
+ 
+#assemblaggio di tutti i vari elementi per la composizione finale del vicinato: 
 neighborood_complete = STRUCT([sem,panchine,alberi,palace1,palace4,palace3,m3D,grid6,gio,lago,palace2,street1,street2,street3,street4,stripes])
 VIEW(neighborood_complete)

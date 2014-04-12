@@ -1,0 +1,98 @@
+ <html>
+ <h1>Nome monumento: Maison Carrée   </h1>
+ <h2>Nome,Cognome: Manuel De Iuliis <br> </h2>
+     
+<h3> Matricola: 416330  </h3>
+
+<body>
+<p>argomento generale: <a href="http://en.wikipedia.org/wiki/History_of_architecture"> argomento </a></p>
+<p>riferimenti: <a href="http://it.wikipedia.org/wiki/Maison_Carr%C3%A9e"> informazioni</a> </p>
+<p>immagini del monumento: </p>
+<p><a href="./images/fig01.png"> lato1 </a></p>
+<p><a href="./images/fig02.png"> dietro </a></p>
+<p><a href="./images/fig03.png"> lato2 </a></p>
+<p><a href="./images/fig04.png"> planimetria </a></p>
+<p><a href="./images/fig05.png"> davanti </a></p> 
+
+<p>Note:</p>
+<p> Durante lo svolgimento dell'homework ho riscontrato anomalie con la funzione
+di VIEW(), in particolare se facevo due VIEW() dello stesso oggetto, una dopo
+l'altra, la struttura da visualizzare andava a perdere componenti random e non
+si visualizzava correttamente, per questo negli esercizi 1,2 e 3 ho commentato le
+VIEW() che mostravano i risultati dell'esercizio. Ho lasciato la VIEW() dell'esercizio
+numero 4 che visualizza il monumento compreso di tutto il vicinato. </p> 
+
+<p>Esercizio n°1: <a href="./python/exercise1.py">codice</a></p>
+per questo esercizio mi sono definito una funzione di utilità per convertire
+i colori nel formato di pyplasm, in modo che posso chiamare la funzione COLOR
+passando come parametro i valori R,G,B del colore scelto. Successivamente sono 
+andato a creare i vari piani orizzontali: per primo la base della struttura, andando a prendere i singoli punti e 
+creando dei poligoni bidimensionali, poi trasformati in 3D, sono state creati vari basi con dimensioni "scalate" per
+cercare di replicare in modo fedele il podio della struttura, che sarebbe il 
+primo piano. Tutte le misure sono scalate dalla
+realtà con un fattore di 1 unità = 1 metro. Una volta definito il podio sono 
+andato a creare il piano contenente i piedistalli per le colonne, 
+le basi per le mura. Il piano successivo è rappresentato dalle 
+colonne, create utizzando come base una circonferenza composta da 10 segmenti,
+questo per renderle leggermente più squadrate, successivamente la base è stata
+replicata ed è stata aggiunta la terza dimensione per realizzare tutte le 
+colonne. Il piano successivo è composto dai vari capitelli delle colonne, 
+composti con un JOIN con la base con la quale sono state costruite le colonne e 
+un cuboide, opportunamente traslati. L'ultimo piano è composto dalla base del tetto,
+per la cui creazioni sono stati utilizzati vari cuboidi.    </p>
+<p>Immagini risulanti dell'esercizio1: <p>
+<p><a href="./images/fig06.png">img1</a></p>
+<p><a href="./images/fig07.png">img2</a></p>
+
+<p>Esercizio n°2: <a href="./python/exercise2.py">codice</a></p>
+In questo esercizio ho creato i piani verticali della struttura, utilizzando le basi 
+delle mura definite nell'esercizio precedente e per ciascun lato sono andato
+a definire il relativo muro dando la terza dimensione alla base, in una facciata
+ho aggiunto la porta di entrata del monumento, e sopra la base del tetto ho costruito
+il tetto vero e proprio composto da due piramidi, dove a quella maggiore è stata 
+"sottratta" quella minore per far sembrare che la maggiore contenga la minore. 
+<p>Immagini risulanti dell'esercizio2: <p>
+<p><a href="./images/fig08.png">img1</a></p>
+<p><a href="./images/fig09.png">img2</a></p>
+<p><a href="./images/fig10.png">img3</a></p>
+
+<p>Esercizio n°3: <a href="./python/exercise3.py">codice</a></p>
+In questo esercizio sono andato a creare inizialmente una griglia di cuboidi
+3x3 che andranno a contenere in seguito i vari elementi del vicinato, il monumento
+l'ho messo al centro della griglia, e ciascun cuboide è separato dall'altro da
+una strada, sono state messe anche delle strisce di attraversamento pedonale tra
+un pezzo della griglia e l'altro. I vari palazzi sono stati realizzati usando
+LAR-CC, in modo simile a quanto visto a lezione, andando prima a definire i vari
+vertici e le varie celle, per ogni palazzo, e successivamente sono stati creati 
+i vari piani e le varie facciate dei palazzi. Ciascun palazzo è stato posizionato
+al centro di un elemento della griglia.  
+
+<p>Immagini risulanti dell'esercizio3: <p>
+<p><a href="./images/fig11.png">img1</a></p>
+<p><a href="./images/fig12.png">img2</a></p>
+<p><a href="./images/fig13.png">img3</a></p>
+
+
+<p>Esercizio n°4: <a href="./python/exercise4.py">codice</a></p>
+In questo esercizio sono stati definiti alcuni componenti di arredo urbano. Per 
+prima cosa sono state definite le funzioni di utilità per creare dei solidi con
+LAR-CC, e successivamente sono state definite delle funzioni per la creazione di
+componenti, quali un laghetto composto semplicemente da differenza e unione di cilindri,
+degli alberi dove il tronco è rappresentato da un cilindro LAR e le foglie da 
+una palla, delle panchine formate da semplici cuboidi, un semaforo composto da 
+una base cilindrica sulla quale sono stati messi tre cubi con i riespettivi colori
+verde,giallo e rosso, avvolti dal loro scheletro reso 3D, e una semplice giostra
+girevole per bambini, realizzata alla base con un componente larpizza come fulcro
+un cilindro di 8 facciate dove a ciascuno spigolo viene aggiunto un componente
+triangolare tridimensionale per farla sembrare una giostra girevole. Come ultima
+cosa tutti i vari componenti sono stati piazzati nei cuboidi della griglia per 
+realizzare il vicinato completo.   
+
+<p>Immagini risulanti dell'esercizio4: <p>
+<p><a href="./images/fig14.png">img1</a></p>
+<p><a href="./images/fig15.png">img2</a></p>
+<p><a href="./images/fig16.png">img3</a></p>
+<p><a href="./images/fig17.png">img4</a></p>
+  
+  </body>
+</html>
