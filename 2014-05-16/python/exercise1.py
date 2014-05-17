@@ -16,6 +16,14 @@ from boolean import vertexSieve
 
 from architectural import *
 from sysml import *
+
+#funzione utilita' per i colori in pyplasm:
+def colors (r,g,b):
+    red = 1.0/255.0 * r
+    green = 1.0/255.0 * g
+    blue = 1.0/255.0 * b 
+    return [red,green,blue]
+
 DRAW = COMP([VIEW,STRUCT,MKPOLS])
 
 V = [[3,0],[7,0],[11,0],[0,1],[3,1],[7,1],[0,5],[2,5],[3,5],[6,5],[7,5],[9,5],[11,5],[2,6],[4,6],[6,6],[0,8],[2,8],[4,8],[6,8],[9,8],[4,9],[6,9]]
@@ -44,7 +52,8 @@ assembly2D = evalStruct(plan)
 assembly1D = larCells(face2edge)(assembly2D)
 mod_1 = larQuote1D( 1*[0.1,-1.0] )
 assembly3D = larBinOps(larModelProduct)(assembly2D)(mod_1)
-base3D = STRUCT(CAT(AA(MKPOLS)(assembly3D)))
+
+base3D = COLOR(colors(167,101,43))(T(3)(-0.1)(STRUCT(CAT(AA(MKPOLS)(assembly3D)))))
 #per i vari blocchi singoli:
 
 #costruzione del blocco della cucina:
@@ -63,9 +72,6 @@ diagram = assemblyDiagramInit([3,1,3])([[0.5,1,0.5],[.1],[1,1,1]])
 kitchen = diagram2cell(diagram,kitchen,toMerge)
 toRemove = [15]
 kitchen= kitchen[0], [cell for k,cell in enumerate(kitchen[1]) if not (k in toRemove)]
-hpc = SKEL_1(STRUCT(MKPOLS(kitchen)))
-hpc = cellNumbering (kitchen,hpc)(range(len(kitchen[1])),CYAN,2)
-#VIEW(hpc)
 kitchen_3D = T(2)(5)(STRUCT(MKPOLS(kitchen)))
 
 
@@ -87,9 +93,6 @@ diagram = assemblyDiagramInit([3,1,3])([[0.5,1,0.5],[.1],[1,1,1]])
 bath = diagram2cell(diagram,bath,toMerge)
 toRemove = [15]
 bath = bath[0], [cell for k,cell in enumerate(bath[1]) if not (k in toRemove)]
-hpc = SKEL_1(STRUCT(MKPOLS(bath)))
-hpc = cellNumbering (bath,hpc)(range(len(bath[1])),CYAN,2)
-#VIEW(hpc)
 bath_3D = T([2,1])([6,2])(STRUCT(MKPOLS(bath)))
 
 
@@ -109,9 +112,6 @@ bed1 = bed1[0], [cell for k,cell in enumerate(bed1[1]) if not (k in toRemove)]
 toMerge = 3
 diagram = assemblyDiagramInit([3,1,3])([[0.8,1.4,0.8],[.1],[1,1.5,0.5]])
 bed1 = diagram2cell(diagram,bed1,toMerge)
-hpc = SKEL_1(STRUCT(MKPOLS(bed1)))
-hpc = cellNumbering (bed1,hpc)(range(len(bed1[1])),CYAN,2)
-#VIEW(hpc)
 toRemove = [15]
 bed1 = bed1[0], [cell for k,cell in enumerate(bed1[1]) if not (k in toRemove)]
 bed1_3D = T(2)(1)(STRUCT(MKPOLS(bed1)))
@@ -133,9 +133,6 @@ diagram = assemblyDiagramInit([5,1,3])([[0.8,1.5,0.3,0.8,0.6],[.1],[1,1.5,0.5]])
 bed2 = diagram2cell(diagram,bed2,toMerge)
 toRemove = [15,20,21]
 bed2 = bed2[0], [cell for k,cell in enumerate(bed2[1]) if not (k in toRemove)]
-hpc = SKEL_1(STRUCT(MKPOLS(bed2)))
-hpc = cellNumbering (bed2,hpc)(range(len(bed2[1])),CYAN,2)
-#VIEW(hpc)
 bed2_3D = T([2,1])([1,3])(STRUCT(MKPOLS(bed2)))
 
 
@@ -157,9 +154,6 @@ diagram = assemblyDiagramInit([3,1,3])([[1,1,1],[.1],[1,1,1]])
 bed3 = diagram2cell(diagram,bed3,toMerge)
 toRemove = [15]
 bed3 = bed3[0], [cell for k,cell in enumerate(bed3[1]) if not (k in toRemove)]
-hpc = SKEL_1(STRUCT(MKPOLS(bed3)))
-hpc = cellNumbering (bed3,hpc)(range(len(bed3[1])),CYAN,2)
-#VIEW(hpc)
 bed3_3D = T([2,1])([6,4])(STRUCT(MKPOLS(bed3)))
 
 
@@ -244,12 +238,10 @@ sala = sala[0], [cell for k,cell in enumerate(sala[1]) if not (k in toRemove)]
 toMerge = 3
 diagram = assemblyDiagramInit([3,1,3])([[1,2,1],[.1],[1,1.3,0.7]])
 sala = diagram2cell(diagram,sala,toMerge)
-hpc = SKEL_1(STRUCT(MKPOLS(sala)))
-hpc = cellNumbering (sala,hpc)(range(len(sala[1])),CYAN,2)
-#VIEW(hpc)
 toRemove = [17]
 sala = sala[0], [cell for k,cell in enumerate(sala[1]) if not (k in toRemove)]
 sala_3D = T(1)(7)(STRUCT(MKPOLS(sala)))
 
-home = (STRUCT([base3D,kitchen_3D, bath_3D, bed1_3D,bed2_3D,bed3_3D, ing2_3D, ing1_3D, bal_3D, sala_3D]))
-VIEW(home)
+wall = COLOR(colors(178,102,79))(STRUCT([kitchen_3D, bath_3D, bed1_3D,bed2_3D,bed3_3D, ing2_3D, ing1_3D, bal_3D, sala_3D]))
+home = STRUCT([wall,base3D])
+#VIEW(home)
