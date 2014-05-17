@@ -45,6 +45,6 @@ base_b = T(3)(0.1)(base)
 #creazione dela base in 3D
 base3D = COLOR(colors(89,93,96))(JOIN([base,base_b]))
 
-#unione di tutti i vari appartamenti più la base per generare il complesso di appartamenti:
+#unione di tutti i vari appartamenti piu' la base per generare il complesso di appartamenti:
 apartments = STRUCT([base3D,home,home2,home3,home4,home5,home6,home7,home8,home9,home10,home11,home12,home13,home14,home15,home16])
 VIEW(apartments)
