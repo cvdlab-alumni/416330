@@ -1,0 +1,48 @@
+<html>
+<body>
+	<h2>Nome: Manuel De Iuliis</h2>
+	<h2>Matricola: 416330 </h2>
+<br>
+<br>
+<p>Note:</p>
+<p> Durante lo svolgimento dell'homework ho riscontrato anomalie con la funzione
+di VIEW(), in particolare se facevo due VIEW() dello stesso oggetto, una dopo
+l'altra, la struttura da visualizzare andava a perdere componenti random e non
+si visualizzava correttamente, per questo nell'esercizio 1 ho commentato la
+VIEW() che mostravano i risultati dell'esercizio. Ho lasciato la VIEW() dell'esercizio
+numero 2 che visualizza il complesso di appartamenti. </p> 
+
+<p> Esercizio numero 1: <a href="./python/exercise1.py">codice</a><br>
+In questo esercizio sono andato a costruire la planimetria di casa mia, dando come base 
+i vertici della struttura e andando a creare il pavimento, successivamente per i vari blocchi della casa
+ho creato per ciascuna stanza un blocco con le relative dimensioni e successivamente li ho traslati sul pavimento.
+per ciascuna stanza sono andato a vedere le celle del blocco e ho rimosso la cella centrale, in modo che si potesse vedere
+l'interno, successivamente alle relative celle ho aggiunto altri diagrammi che rappresentavano porte e finestre e infine 
+ho rimosso le celle necessarie.
+</p>
+Qualche immagine del lavoro svolto: <a href="./images/fig01.png">img1</a> <a href="./images/fig02.png">img2</a> <a href="./images/fig03.png">img3</a> <a href="./images/fig07.png">img4</a></p>
+<br>
+<p>Esercizio numero 2: <a href="./python/exercise2.py">codice</a><br>
+In questo esercizio sono andato a creare degli altri appartamenti, tutti andando a traslare quello originale di dimensioni 
+	opportune, sono andato a creare una base per la struttura composta da due "rettangoli" per i due complessi e da due curve
+	che raccordano il tutto, dando come punti di controllo per le curve gli estremi che si avrebbero se i due piani precedenti
+	fossero un unico grande rettangolo. Per fare il piano in 3D ho traslato sull'asse z un secondo piano, identico al precedente, 
+	e ho fatto un JOIN dei due.
+</p><p>
+Qualche immagine del lavoro svolto: <a href="./images/fig04.png">img1</a> <a href="./images/fig05.png">img2</a> <a href="./images/fig06.png">img3</a></p>
+<br>
+<p>Esercizio numero3: <a href="./python/exercise3.py">codice</a><br>
+In questo esercizio non ho ben capito cosa si chiedeva, se si voleva la rimozione/fusione di una stessa cella
+	ma su diagrammi diversi, oppure se si voleva la rimozione/fusione di diverse celle sullo stesso diagramma, cosi'
+	per evitare inconvenienti ho fatto tutti e due i tipi. Per il primo tipo e' semplice, basta fare un ciclo su cui si 
+	andra' a togliere/aggiungere sulla cella desiderata per tutti gli elementi. Per il secondo la rimozione non dava problemi,
+	perche' in toRemove si puo' passare una lista di celle da rimuovere e tutto funziona, per la fusione pero' bisogna stare attenti,
+	perche' la numerazione delle celle cambia dopo che e' stato aggiunto un diagramma, per cui si puo' usare lo stratagemma
+	di fare gli inserimenti partendo dalla cella maggiore e andando in ordine decrescente, cosi' facendo cambia la numerazione delle celle
+	superiori a quella fusa, mentre restano invariati i precedenti, per togliere il vincolo che l'utente deve passare alla funzione
+	le celle in ordine decrescente, nella funzione viene eseguito un sort con un successivo reverse della lista delle celle da fondere, 
+	in questo modo le prime celle da fondere saranno quelle con numerazione maggiore e si puo' procedere alla fusione.
+</p>
+
+</body>
+</html>

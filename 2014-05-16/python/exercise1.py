@@ -35,18 +35,6 @@ bU = AA(SOLIDIFY)(AA(POLYLINE)(lar2polylines (dwelling)))
 EV = face2edge(FV)
 base = STRUCT(MKPOLS((V,EV)))
 
-eE,iP = bUnit_to_eEiP(FV,EV)
-modEe1D = V, [EV[e] for e in eE]
-modIp1D = V, [EV[e] for e in iP]
-#rappresenta il bordo esterno;
-eE1D = AA(COLOR(RED))(MKPOLS(modEe1D))
-#rappresenta il bordo interno;
-iP1D = AA(COLOR(GREEN))(MKPOLS(modIp1D))
-floorHeight = larIntervals([1])([4])
-#cosi si moltiplica la riga per l'altezza ottenendo una struttura 2D rialzata, simile all'extrude
-modIp2D = larModelProduct([ modIp1D, floorHeight ])
-modEe2D = larModelProduct([ modEe1D, floorHeight ])
-
 plan = Struct([dwelling])
 assembly2D = evalStruct(plan)
 assembly1D = larCells(face2edge)(assembly2D)
@@ -54,6 +42,7 @@ mod_1 = larQuote1D( 1*[0.1,-1.0] )
 assembly3D = larBinOps(larModelProduct)(assembly2D)(mod_1)
 
 base3D = COLOR(colors(167,101,43))(T(3)(-0.1)(STRUCT(CAT(AA(MKPOLS)(assembly3D)))))
+
 #per i vari blocchi singoli:
 
 #costruzione del blocco della cucina:
@@ -81,8 +70,6 @@ bath = assemblyDiagramInit([3,3,1])([[0.1,1.8,0.1],[0.1,1.7,0.2],[3]])
 V,CV = bath
 bath = V,[cell for k, cell in enumerate(CV) if not (k in toRemove)]
 V,CV = bath
-hpc = SKEL_1(STRUCT(MKPOLS(bath)))
-hpc = cellNumbering (bath,hpc)(range(len(bath[1])),CYAN,2)
 toMerge = 3
 diagram = assemblyDiagramInit([3,1,2])([[0.5,1,0.5],[.1],[2,0.9]])
 bath = diagram2cell(diagram,bath,toMerge)
@@ -102,8 +89,6 @@ bed1 = assemblyDiagramInit([3,3,1])([[0.2,2.7,0.1],[0.2,3.7,0.1],[3]])
 V,CV = bed1
 bed1 = V,[cell for k, cell in enumerate(CV)if not(k in toRemove)]
 V,CV = bed1
-hpc = SKEL_1(STRUCT(MKPOLS(bed1)))
-hpc = cellNumbering (bed1,hpc)(range(len(bed1[1])),CYAN,2)
 toMerge = 4
 diagram = assemblyDiagramInit([3,1,2])([[2.2,0.7,0.1],[.1],[2,0.9]])
 bed1 = diagram2cell(diagram,bed1,toMerge)
@@ -142,8 +127,6 @@ bed3 = assemblyDiagramInit([3,3,1])([[0.1,1.8,0.1],[0.1,2.7,0.2],[3]])
 V,CV = bed3 
 bed3 = V,[cell for k, cell in enumerate(CV) if not(k in toRemove)]
 V,CV = bed3
-hpc = SKEL_1(STRUCT(MKPOLS(bed3)))
-hpc = cellNumbering (bed3,hpc)(range(len(bed3[1])),CYAN,2)
 toMerge = 3
 diagram = assemblyDiagramInit([3,1,2])([[0.5,1,0.5],[.1],[2,0.9]])
 bed3 = diagram2cell(diagram,bed3,toMerge)

@@ -21,3 +21,17 @@ def merge_cell(masters,toMerge,diagram):
         list.append(diagram2cell(diagram,x,toMerge))
     return list
         
+#funzione per rimuovere più celle da un blocco
+def remove_cells(master,toRemove):
+    V,CV = master
+    master = V,[cell for k in enumerate(CV) if not(k in toRemove)]
+    return master
+
+#funzione per aggiungere uno stesso diagramma in più blocchi di un diagramma:
+def merge_cells(master, diagram, toMerge):
+    toMerge.sort()
+    toMerge.reverse()
+    for i in toMerge:
+        master = diagram2cell(diagram,master,i)
+    return master
+    
