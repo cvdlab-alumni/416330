@@ -13,12 +13,17 @@ VIEW() che mostravano i risultati dell'esercizio. Ho lasciato la VIEW() dell'ese
 numero 2 che visualizza il complesso di appartamenti. </p> 
 
 <p> Esercizio numero 1: <a href="./python/exercise1.py">codice</a><br>
-In questo esercizio sono andato a costruire la planimetria di casa mia, dando come base 
-i vertici della struttura e andando a creare il pavimento, successivamente per i vari blocchi della casa
-ho creato per ciascuna stanza un blocco con le relative dimensioni e successivamente li ho traslati sul pavimento.
-per ciascuna stanza sono andato a vedere le celle del blocco e ho rimosso la cella centrale, in modo che si potesse vedere
+In questo esercizio sono andato a costruire la struttura di casa mia, la casa e' stata suddivisa in varie stanze,
+come nella realta', e ciascuna stanza e' rappresentata da un blocco. Successivamente per i vari blocchi della casa
+ho creato per ciascuna stanza un blocco con le relative dimensioni poi li ho traslati sul pavimento.
+Per ciascuna stanza sono andato a vedere le celle del blocco e ho rimosso la cella centrale, in modo che si potesse vedere
 l'interno, successivamente alle relative celle ho aggiunto altri diagrammi che rappresentavano porte e finestre e infine 
-ho rimosso le celle necessarie.
+ho rimosso le celle necessarie. Per la struttura finale della casa ho scelto di fare due strutture, una in pyplasm e una in lar, quella in lar
+per un'esportazione futura del progetto, per fare questo mi sono creato una funzione che dati vari modelli lar li mette dentro un unico modello lar
+utilizzando due funzioni ausiliarie che mettono insieme una lista di vertici e una lista di celle, per i vertici non ci stanno problemi basta unire
+le due liste di vertici, per le celle invece il problema e' che bisogna cambiare i valori in base alla posizione che hanno i vertici nella nuova lista, per
+risolvere questo piccolo problema e' bastato addizionare il valore della cella vecchia con la lunghezza della lista di vertici nuova prima dell'inserimento
+dei nuovi vertici.
 </p>
 Qualche immagine del lavoro svolto: <a href="./images/fig01.png">img1</a> <a href="./images/fig02.png">img2</a> <a href="./images/fig03.png">img3</a> <a href="./images/fig07.png">img4</a></p>
 <br>
@@ -27,7 +32,7 @@ In questo esercizio sono andato a creare degli altri appartamenti, tutti andando
 	opportune, sono andato a creare una base per la struttura composta da due "rettangoli" per i due complessi e da due curve
 	che raccordano il tutto, dando come punti di controllo per le curve gli estremi che si avrebbero se i due piani precedenti
 	fossero un unico grande rettangolo. Per fare il piano in 3D ho traslato sull'asse z un secondo piano, identico al precedente, 
-	e ho fatto un JOIN dei due.
+	e ho fatto un JOIN dei due. Infine ho posizionato due alberelli lar.
 </p><p>
 Qualche immagine del lavoro svolto: <a href="./images/fig04.png">img1</a> <a href="./images/fig05.png">img2</a> <a href="./images/fig06.png">img3</a></p>
 <br>

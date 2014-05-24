@@ -8,8 +8,38 @@ from exercise1 import *
 def bezier(points):
     return MAP(BEZIERCURVE(points))(INTERVALS(1)(20))
 
+def larMap(coordFuncs):
+    def larMap0(domain):
+        V,CV = domain
+        V = TRANS(CONS(coordFuncs)(V)) 
+        return V,CV
+    return larMap0
+
+def larCylinder(params):
+    radius,height= params
+    def larCylinder0(shape=[36,1]):
+        domain = larIntervals(shape)([2*PI,1])
+        V,CV = domain
+        x = lambda V : [radius*COS(p[0]) for p in V]
+        y = lambda V : [radius*SIN(p[0]) for p in V]
+        z = lambda V : [height*p[1] for p in V]
+        mapping = [x,y,z]
+        model = larMap(mapping)(domain)
+        return model
+    return larCylinder0
+
+def albero(r,h):
+    modeltronco = larCylinder([r,h])([32,1])
+    tronco = STRUCT(MKPOLS(modeltronco))
+    tronco = COLOR(colors(86,34,0))(tronco)
+    modelfoglie = larBall(r+1)([18,36])
+    foglie = STRUCT(MKPOLS(modelfoglie))
+    foglie = T(3)(h+1)(foglie)
+    foglie = COLOR(colors(43,119,33))(foglie)
+    return STRUCT([tronco,foglie])
+
 #creazione del complesso di appartamenti:
-home = T(3)(0.2)(home)
+home = T(3)(0.2)(home_pyplasm)
 home2 = T(3)(3.1)(home)
 home3 = R([2,1])(PI/2)(home)
 home3 = T([2,1])([18.5,-4.8])(home3)
@@ -27,6 +57,10 @@ home14 = T(3)(3.1)(home13)
 home15 = T(3)(3.1)(home14)
 home16 = T(3)(3.1)(home15)
 
+#creazione alberi:
+albero1 = T([1,2,3])([12,15,0.2])(albero(0.2,4))
+albero2 = T(2)(5)(albero1)
+
 #creazione del pianoterra dove sono poggiati gli appartamenti
 V = [[-5,0],[-5,29.6],[22,0],[22,29.6],[0,0],[-5,4],[4,29.6],[22,9],[4,4],[0,9]]
 FV = [[4,9,7,2],[5,1,6,8]]
@@ -43,8 +77,8 @@ base = (STRUCT(MKPOLS((V,EV)) + curva1 + curva2))
 base_b = T(3)(0.1)(base)
 
 #creazione dela base in 3D
-base3D = COLOR(colors(89,93,96))(JOIN([base,base_b]))
+base3D = COLOR(colors(32,86,37))(JOIN([base,base_b]))
 
 #unione di tutti i vari appartamenti piu' la base per generare il complesso di appartamenti:
-apartments = STRUCT([base3D,home,home2,home3,home4,home5,home6,home7,home8,home9,home10,home11,home12,home13,home14,home15,home16])
+apartments = STRUCT([albero1,albero2,base3D,home,home2,home3,home4,home5,home6,home7,home8,home9,home10,home11,home12,home13,home14,home15,home16])
 VIEW(apartments)
