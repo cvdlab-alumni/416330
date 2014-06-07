@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <title>Lamp</title> 
+  <style>
+    body{
+      margin: 0;
+      overflow: hidden;
+    }
+  </style> 
+  </head> 
+  <body>
+    <!-- JavaScript libraries -->
+     <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r67/three.min.js"></script> 
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/stats.js/r11/Stats.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
+    <script src="./assets/libs/TrackballControls.js"></script>
+    <script type="text/javascript" src="./assets/fonts/bitstream_vera_sans_mono_roman.typeface.js"></script> 
+    <script src="./assets/libs/keyframe.js"></script>
+    <!-- Javascript code that runs our Three.js examples --> 
+    <script>
+      // once everything is loaded, we run our Three.js stuff.
+      $(function () {
+        // here we'll put the Three.js stuff
+
+
+        var scene = new THREE.Scene();
+      var stats = initStats();
+
+      
+      var axisHelper = new THREE.AxisHelper(3);
+
+      // create a camera, which defines where we're looking at.
+      var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+      
+
+      // create a render and set the size
+      var renderer = new THREE.WebGLRenderer();
+      renderer.setClearColor(new THREE.Color(0xEEEEEE, 1.0));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.shadowMapSoft = true;
+      renderer.shadowMapType = THREE.PCFSoftShadowMap;
+      renderer.shadowMapAutoUpdate = true;
+      renderer.shadowMapEnabled = true;
+
+      var spotLight = new THREE.SpotLight( 0xffffff, 2.0 );
+      spotLight.position.set(180,60,10);
+
+      scene.add(spotLight);
+
+
+      camera.position.set(80,50,30);
+      camera.lookAt(new THREE.Vector3(5, 0, 0));
+      var trackballControls = new THREE.TrackballControls(camera);
+
+        var hpiano = 30; 
+        var wpiano = 160;
+        var planeGeometry = new THREE.PlaneGeometry(wpiano,hpiano,20,20);
+        var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff, side:THREE.DoubleSide});
+        var plane = new THREE.Mesh(planeGeometry,planeMaterial);
+        plane.rotation.x=-0.5*Math.PI;
+        plane.receiveShadow = true;
+        plane.position.set(wpiano/2-hpiano,0,0);
+        plane.receiveShadow = true;
+        scene.add(plane);
+
+      function arm(w,h)
+      {
+        var armGeometry = new THREE.CylinderGeometry(w,w,h);
+        var armMaterial = new THREE.MeshLambertMaterial({color: 0xA9A9A9});
+        var arm = new THREE.Mesh(armGeometry,armMaterial);
+        arm.position.set(0,h/2,0);
+        var pivotGeometry = new THREE.SphereGeometry(w,10,10);
+        var pivotMaterial = new THREE.MeshLambertMaterial({color: 0xA9A9A9});
+        var pivot = new THREE.Mesh(pivotGeometry,pivotMaterial);
+
+        pivot.add(arm);
+        pivot.arm = arm;
+        var hook = new THREE.Object3D();
+
+        hook.position.set(0,(h/2), 0);
+        arm.add(hook);
+        pivot.hook = hook;
+
+        return pivot;
+      }
+
+      function sphere(wpivot,w,angle)
+      {
+        var SphereGeometry = new THREE.SphereGeometry(w,10,10,angle,2*angle,angle/2,angle);
+        var sphereMaterial = new THREE.MeshLambertMaterial({color: 0xA9A9A9});
+        var sphere = new THREE.Mesh(SphereGeometry,sphereMaterial);
+        sphere.position.set(0,w,0);
+
+        var pivotGeometry = new THREE.SphereGeometry(wpivot,10,10);
+        var pivotMaterial = new THREE.MeshLambertMaterial({color: 0xA9A9A9});
+        var pivot = new THREE.Mesh(pivotGeometry,pivotMaterial);
+
+        pivot.add(sphere);
+        pivot.sphere = sphere;
+        var hook = new THREE.Object3D();
+        hook.position.set(0,-w/2,0);
+        sphere.add(hook);
+        pivot.hook = hook;
+
+        return pivot;
+
+
+      };
+
+
+      var wbase = 2.5;
+      var hbase = 1;
+      var baseGeometry = new THREE.CylinderGeometry(wbase,wbase,hbase,20,20);
+      var baseMaterial = new THREE.MeshLambertMaterial({color: 0xA9A9A9});
+      var base = new THREE.Mesh(baseGeometry,baseMaterial);
+      base.position.set(0,hbase/2,0);
+      var hook = new THREE.Object3D();
+      hook.position.set(0,hbase,0);
+      base.add(hook);
+      base.hook = hook;
+
+      var arm1 = arm(0.5,3);
+      
+      base.hook.add(arm1);
+
+      var arm2 = arm(0.5,3);
+      arm1.hook.add(arm2);
+
+      var shell = sphere(0.5,3,Math.PI);
+      arm2.hook.add(shell);
+
+      var lightGeometry = new THREE.SphereGeometry(1,10,10);
+      var lightMaterial = new THREE.MeshPhongMaterial({color: 0x00FF00});
+      var lightMesh = new THREE.Mesh(lightGeometry, lightMaterial);
+
+      var app = new THREE.Object3D();
+      app.position.set(0,40,0);
+     
+
+
+      var pointColor = "#ffffff";
+      var light = new THREE.SpotLight(pointColor);
+      
+      
+      light.distance = 100;
+      light.angle = 0.75;
+      light.exponent = 30;
+      light.intensity = 10;
+      light.castShadow = true;
+      
+      light.shadowCameraNear = 2;
+      light.shadowCameraFar = 200;
+      light.shadowCameraFov = 70;
+      light.shadowDarkness = 0.5;
+      light.shadowMapWidth = 256;
+      light.shadowMapHeight = 256;
+      light.shadow;
+      light.target = app;
+
+      arm2.hook.add(app);
+      lightMesh.add(light);
+      shell.hook.add(lightMesh);
+      base.rotation.y = Math.PI/2;
+      base.position.set(25,hbase/2,0);
+      scene.add(base);
+
+      var cubeGeometry = new THREE.BoxGeometry(1,1,1);
+      var cubeMaterial = new THREE.MeshLambertMaterial({color: 0x00FF00});
+      var cube = new THREE.Mesh(cubeGeometry,cubeMaterial);
+      cube.castShadow = true;
+      cube.position.set(10,0,10);
+      scene.add(cube); 
+
+      var controls = new function(){
+        this.light = true;
+        this.alfa = Math.PI;
+        this.beta = Math.PI/6;
+        this.gamma = -Math.PI/3;
+        this.delta = Math.PI/2;
+        this.epsilon = Math.PI/2;
+        this.x = -(base.position.x)/50;
+        this.y = base.position.z;
+        this.animation = false;
+        this.shadowHelper = false;
+      };
+
+
+      var gui = new dat.GUI();
+      var cgui = gui.addFolder("move lamp");
+      cgui.add(controls,"x",-1.00,+1.00).onChange(function(e){
+        base.position.x = ((e*(wpiano/2))+(wpiano/2-hpiano));
+      });
+      cgui.add(controls,"y",-1.00,+1.00).onChange(function(e){
+        base.position.z = e*(hpiano/2);
+      });
+      var lgui = gui.addFolder("light options");
+      lgui.add(controls,"shadowHelper").onChange(function(e){
+        light.shadowCameraVisible = e;
+      });
+      lgui.add(controls,"light").onChange(function(e){
+        if(e)
+        {
+          light.intensity = 10;
+          renderer.shadowMapAutoUpdate = true;
+        }
+        else
+        {
+          light.intensity = 0;
+          renderer.shadowMapAutoUpdate = false;
+          renderer.clearTarget( light.shadowMap );
+        }
+      });
+      base.hook.rotation.y = controls.alfa;
+      arm1.rotation.x = controls.beta;
+      arm1.hook.rotation.x = controls.gamma;
+      arm2.rotation.y = controls.delta;
+      arm2.hook.rotation.x = controls.epsilon;
+
+      gui.add(controls,"alfa",0.0,2*Math.PI).onChange(function(e){
+        base.hook.rotation.y = e;
+      });
+      gui.add(controls,"beta",0.0,Math.PI/2).onChange(function(e){
+        arm1.rotation.x = e;
+      });
+      gui.add(controls,"gamma",-Math.PI/2,+Math.PI/2).onChange(function(e){
+        arm1.hook.rotation.x = e;
+      });
+      gui.add(controls,"delta",0.0,2*Math.PI).onChange(function(e){
+        arm2.rotation.y = e;
+      });
+      gui.add(controls,"epsilon",0.0,Math.PI/2).onChange(function(e){
+        arm2.hook.rotation.x = e;
+      });
+
+
+      axisHelper.visible = true;
+      scene.add(axisHelper);
+    
+
+
+       var options = {
+            size: 10,
+            height: 1,
+            weight: "normal",
+            font: "bitstream vera sans mono",
+            bevelThickness: 2,
+            bevelSize: 0.5,
+            bevelSegments: 3,
+            bevelEnabled: true,
+            curveSegments: 10,
+            steps: 1
+          };
+
+          var text = new THREE.Object3D();
+          console.log(THREE.FontUtils.faces);
+          text1 = createMesh(new THREE.TextGeometry("P", options));
+          text1.position.x = -20;
+          text1.castShadow = true;
+         
+          text2 = createMesh(new THREE.TextGeometry("X  A  R",options));
+          text2.position.x = +20;
+          text2.castShadow = true;
+
+          text3 = createMesh(new THREE.TextGeometry("I",options));
+          text3.castShadow = true;
+          
+          text.add(text1);
+          text.add(text2);
+          text.position.set(20,0,0);
+          text.castShadow = true;
+          text.traverse(function(object){
+            if (object instanceof THREE.Mesh)
+            {
+              object.castShadow = true;
+            }
+          });
+          scene.add(text);
+
+        
+
+function createMesh(geom) {
+        var meshMaterial = new THREE.MeshPhongMaterial({specular: 0xffffff, color: 0x000000, shininess: 80, metal: true});
+        var plane = THREE.SceneUtils.createMultiMaterialObject(geom, [meshMaterial]);
+        plane.castShadow = true;
+        return plane;
+      }
+     
+      //define animations
+      var animator = null;
+      var animator2 = null;
+      var animator3 = null;
+      var animator4 = null;
+      var animator5 = null;
+      var animator6 = null;
+      var animator7 = null;
+      var animator8 = null;
+      var animator9 = null;
+      var duration = 8; // sec
+      var loopAnimation = false;
+
+      function initAnimator() {
+        animator = new KF.KeyFrameAnimator;
+        animator.init({ 
+          interps:
+            [
+              { 
+                keys:[0, .1, .2, .3, .4,.6], 
+                values:[
+                  { x : -30  },
+                  { x : -18.75  },
+                  { x : -7.5 },
+                  { x : 3.75 },
+                  { x : 13 },
+                  {x : 23.5}
+                ],
+                target:base.position
+              },
+            ],
+          loop: loopAnimation,
+          duration: duration * 1000
+        });
+        animator9 = new KF.KeyFrameAnimator;
+        animator9.init({ 
+          interps:
+            [
+              { 
+                keys:[0, .6,.7], 
+                values:[
+                  { z : 7.5  },
+                  { z : 7.5  },
+                  { z : 0 }
+                ],
+                target:base.position
+              },
+            ],
+          loop: loopAnimation,
+          duration: duration * 1000
+        });
+        animator2 = new KF.KeyFrameAnimator;
+        animator2.init({ 
+          interps:
+            [
+              { 
+                keys:[0, .1, .2, .3, .4,.6], 
+                values:[
+                  { z : -0.5 },
+                  { z : 0.5  },
+                  { z : -0.5 },
+                  { z : 0.5 },
+                  { z : -0.5 },
+                  {z:0}
+                ],
+                target:base.rotation
+              },
+            ],
+          loop: loopAnimation,
+          duration: duration * 1000
+        });
+        animator3 = new KF.KeyFrameAnimator;
+        animator3.init({ 
+          interps:
+            [
+              { 
+                keys:[0, .1, .2, .3, .4,.6,.7,.8], 
+                values:[
+                  { y : 2  },
+                  { y : 0  },
+                  { y : 2 },
+                  { y : 0 },
+                  { y : 2 },
+                  {y:20},
+                  {y:10},
+                  {y:hbase/2}
+                ],
+                target:base.position
+              },
+            ],
+          loop: loopAnimation,
+          duration: duration * 1000
+        });
+
+        animator4 = new KF.KeyFrameAnimator;
+        animator4.init({ 
+          interps:
+            [
+              { 
+                keys:[0, .7,.8], 
+                values:[
+                  { y : 1  },
+                  {y:1},
+                  { y : 0 },
+                  ],
+                target:text3.scale
+              },
+            ],
+          loop: loopAnimation,
+          duration: duration * 1000
+        });
+
+        animator5 = new KF.KeyFrameAnimator;
+        animator5.init({ 
+          interps:
+            [
+              { 
+                keys:[0, .1, .2, .3, .4, .6,.7,.8,1], 
+                values:[
+                  { x : 0.52  },
+                  { x: +Math.PI/2  },
+                  { x : 0.52 },
+                  { x : +Math.PI/2 },
+                  { x : 0.52},
+                  { x : 0},
+                  { x : Math.PI/4},
+                  { x: Math.PI/2},
+                  {x: 0.52}
+                  ],
+                target:arm1.rotation
+              },
+            ],
+          loop: loopAnimation,
+          duration: duration * 1000
+        });
+        animator6 = new KF.KeyFrameAnimator;
+        animator6.init({ 
+          interps:
+            [
+              { 
+                keys:[0, .1, .2, .3, .4, .6,.7,.8,1], 
+                values:[
+                  { x : -1  },
+                  { x: -Math.PI/2  },
+                  { x : -1 },
+                  { x : -Math.PI/2 },
+                  { x : -1},
+                  { x : 0},
+                  { x : -Math.PI/4},
+                  { x: -Math.PI/2},
+                  {x: -1}
+                  ],
+                target:arm1.hook.rotation
+              },
+            ],
+          loop: loopAnimation,
+          duration: duration * 1000
+        });
+        animator7 = new KF.KeyFrameAnimator;
+        animator7.init({ 
+          interps:
+            [
+              { 
+                keys:[0, .1, .2, .3, .4, .6,.7,.8,1], 
+                values:[
+                  { x : 1.6  },
+                  { x: Math.PI/4  },
+                  { x : 1.6 },
+                  { x : Math.PI/4 },
+                  { x : 1.6},
+                  { x : 0},
+                  { x : Math.PI/4},
+                  { x: Math.PI/2},
+                  {x: 1.6}
+                  ],
+                target:arm2.hook.rotation
+              },
+            ],
+          loop: loopAnimation,
+          duration: duration * 1000
+        });
+        animator8 = new KF.KeyFrameAnimator;
+        animator8.init({ 
+          interps:
+            [
+              { 
+                keys:[0,.8,1], 
+                values:[
+                  { y: Math.PI  },
+                  { y: Math.PI },
+                  { y: Math.PI/2}
+                  ],
+                target:arm2.rotation
+              },
+            ],
+          loop: loopAnimation,
+          duration: duration * 1000
+        });
+      };
+
+      initAnimator();
+      
+
+ // add the output of the renderer to the html element
+      $('body').append(renderer.domElement);
+
+      render();
+      gui.add(controls,"animation").onChange(function(e){
+        if (e)
+        {
+          text.add(text3);
+          base.position.set(-30,hbase/2,0);
+          base.hook.rotation.y = 1.6;
+          base.rotation.x = 2* Math.PI;
+          base.rotation.y = Math.PI;
+          arm1.rotation.x = 0.52;
+          arm1.hook.rotation.x = -1;
+          arm2.rotation.y = 3.1;
+          arm2.hook.rotation.x = 1.0;
+          animator.start();
+          animator9.start();
+          animator2.start();
+          animator3.start();
+          animator4.start();
+          animator5.start();
+          animator6.start();
+          animator7.start();
+          animator8.start();
+   
+        }
+        else
+        {
+          text.remove(text3);
+          base.hook.rotation.y = controls.alfa;
+          base.rotation.x = 0;
+          base.rotation.z = 0;
+          base.rotation.y = Math.PI/2;
+          arm1.rotation.x = controls.beta;
+          arm1.hook.rotation.x = controls.gamma;
+          arm2.rotation.y = controls.delta;
+          arm2.hook.rotation.x = controls.epsilon;
+          base.hook.rotation.y = Math.PI
+          base.position.set(23.5,hbase/2,0);
+        }
+      })
+ //     animator.start();
+  //    animator2.start();
+
+      function render() {
+        stats.update();
+
+        trackballControls.update();
+        KF.update();
+       
+        // render using requestAnimationFrame
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+      }
+      function initStats() {
+        var stats = new Stats();
+        stats.setMode(0); // 0: fps, 1: ms
+        $('body').append(stats.domElement);
+        return stats;
+      }
+
+      });
+    </script>  
+ </body>
+</html>
