@@ -10,7 +10,6 @@
   </style> 
   </head> 
   <body>
-    <!-- JavaScript libraries -->
      <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r67/three.min.js"></script> 
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
     <script src="http://cdnjs.cloudflare.com/ajax/libs/stats.js/r11/Stats.min.js"></script>
@@ -18,14 +17,10 @@
     <script src="./assets/libs/TrackballControls.js"></script>
     <script type="text/javascript" src="./assets/fonts/bitstream_vera_sans_mono_roman.typeface.js"></script> 
     <script src="./assets/libs/keyframe.js"></script>
-    <!-- Javascript code that runs our Three.js examples --> 
     <script>
-      // once everything is loaded, we run our Three.js stuff.
       $(function () {
-        // here we'll put the Three.js stuff
 
-
-        var scene = new THREE.Scene();
+      var scene = new THREE.Scene();
       var stats = initStats();
 
       
@@ -44,33 +39,41 @@
       renderer.shadowMapAutoUpdate = true;
       renderer.shadowMapEnabled = true;
 
+// create a simple light to scene:
       var spotLight = new THREE.SpotLight( 0xffffff, 2.0 );
       spotLight.position.set(180,60,10);
 
       scene.add(spotLight);
 
 
-      camera.position.set(80,50,30);
+      camera.position.set(120,60,150);
       camera.lookAt(new THREE.Vector3(5, 0, 0));
       var trackballControls = new THREE.TrackballControls(camera);
 
-        var hpiano = 30; 
-        var wpiano = 160;
-        var planeGeometry = new THREE.PlaneGeometry(wpiano,hpiano,20,20);
-        var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff, side:THREE.DoubleSide});
-        var plane = new THREE.Mesh(planeGeometry,planeMaterial);
-        plane.rotation.x=-0.5*Math.PI;
-        plane.receiveShadow = true;
-        plane.position.set(wpiano/2-hpiano,0,0);
-        plane.receiveShadow = true;
-        scene.add(plane);
+// create the plane of the scene, to receive shadow effect: 
+      var hpiano = 30; 
+      var wpiano = 160;
+      var planeGeometry = new THREE.PlaneGeometry(wpiano,hpiano,20,20);
+      var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff, side:THREE.DoubleSide});
+      var plane = new THREE.Mesh(planeGeometry,planeMaterial);
+      plane.rotation.x=-0.5*Math.PI;
+      plane.receiveShadow = true;
+      plane.position.set(wpiano/2-hpiano,0,0);
+      plane.receiveShadow = true;
+      scene.add(plane);
 
+// function to create an arm of the lamp, with relative pivot and hook:
       function arm(w,h)
       {
-        var armGeometry = new THREE.CylinderGeometry(w,w,h);
-        var armMaterial = new THREE.MeshLambertMaterial({color: 0xA9A9A9});
-        var arm = new THREE.Mesh(armGeometry,armMaterial);
-        arm.position.set(0,h/2,0);
+        var armGeometry = new THREE.CylinderGeometry(w/4,w/4,h);
+        var armMaterial = new THREE.MeshLambertMaterial({color: 0xD2D2D2});
+        var arm1 = new THREE.Mesh(armGeometry,armMaterial);
+        arm1.position.set(-w/2,h/2+w,0);
+        var arm2 = new THREE.Mesh(armGeometry,armMaterial);
+        arm2.position.set(+w/2,h/2+w,0);
+        var arm = new THREE.Object3D();
+        arm.add(arm1);
+        arm.add(arm2);
         var pivotGeometry = new THREE.SphereGeometry(w,10,10);
         var pivotMaterial = new THREE.MeshLambertMaterial({color: 0xA9A9A9});
         var pivot = new THREE.Mesh(pivotGeometry,pivotMaterial);
@@ -79,17 +82,18 @@
         pivot.arm = arm;
         var hook = new THREE.Object3D();
 
-        hook.position.set(0,(h/2), 0);
+        hook.position.set(0,(h)+w, 0);
         arm.add(hook);
         pivot.hook = hook;
 
         return pivot;
       }
 
+// function to create the top of the lamp:
       function sphere(wpivot,w,angle)
       {
         var SphereGeometry = new THREE.SphereGeometry(w,10,10,angle,2*angle,angle/2,angle);
-        var sphereMaterial = new THREE.MeshLambertMaterial({color: 0xA9A9A9});
+        var sphereMaterial = new THREE.MeshLambertMaterial({color: 0xD2D2D2});
         var sphere = new THREE.Mesh(SphereGeometry,sphereMaterial);
         sphere.position.set(0,w,0);
 
@@ -109,11 +113,11 @@
 
       };
 
-
+// creating a lamp:
       var wbase = 2.5;
       var hbase = 1;
       var baseGeometry = new THREE.CylinderGeometry(wbase,wbase,hbase,20,20);
-      var baseMaterial = new THREE.MeshLambertMaterial({color: 0xA9A9A9});
+      var baseMaterial = new THREE.MeshLambertMaterial({color: 0xD2D2D2});
       var base = new THREE.Mesh(baseGeometry,baseMaterial);
       base.position.set(0,hbase/2,0);
       var hook = new THREE.Object3D();
@@ -132,14 +136,14 @@
       arm2.hook.add(shell);
 
       var lightGeometry = new THREE.SphereGeometry(1,10,10);
-      var lightMaterial = new THREE.MeshPhongMaterial({color: 0x00FF00});
+      var lightMaterial = new THREE.MeshPhongMaterial({specular: 0xffffff, color: 0xFDE910, shininess: 100, metal: true});
       var lightMesh = new THREE.Mesh(lightGeometry, lightMaterial);
 
       var app = new THREE.Object3D();
       app.position.set(0,40,0);
      
 
-
+// creating the light of the lamp:
       var pointColor = "#ffffff";
       var light = new THREE.SpotLight(pointColor);
       
@@ -166,13 +170,15 @@
       base.position.set(25,hbase/2,0);
       scene.add(base);
 
-      var cubeGeometry = new THREE.BoxGeometry(1,1,1);
+// define simple cube to view shadow effect:
+      var cubeGeometry = new THREE.BoxGeometry(2,2,2);
       var cubeMaterial = new THREE.MeshLambertMaterial({color: 0x00FF00});
       var cube = new THREE.Mesh(cubeGeometry,cubeMaterial);
       cube.castShadow = true;
-      cube.position.set(10,0,10);
+      cube.position.set(10,1,10);
       scene.add(cube); 
 
+// define and add controls to gui:
       var controls = new function(){
         this.light = true;
         this.alfa = Math.PI;
@@ -180,7 +186,7 @@
         this.gamma = -Math.PI/3;
         this.delta = Math.PI/2;
         this.epsilon = Math.PI/2;
-        this.x = -(base.position.x)/50;
+        this.x = base.position.x;
         this.y = base.position.z;
         this.animation = false;
         this.shadowHelper = false;
@@ -189,11 +195,11 @@
 
       var gui = new dat.GUI();
       var cgui = gui.addFolder("move lamp");
-      cgui.add(controls,"x",-1.00,+1.00).onChange(function(e){
-        base.position.x = ((e*(wpiano/2))+(wpiano/2-hpiano));
+      cgui.add(controls,"x",-30+wbase,+130-wbase).onChange(function(e){
+        base.position.x = e;
       });
-      cgui.add(controls,"y",-1.00,+1.00).onChange(function(e){
-        base.position.z = e*(hpiano/2);
+      cgui.add(controls,"y",-15+wbase,+15-wbase).onChange(function(e){
+        base.position.z = e;
       });
       var lgui = gui.addFolder("light options");
       lgui.add(controls,"shadowHelper").onChange(function(e){
@@ -239,7 +245,7 @@
       scene.add(axisHelper);
     
 
-
+//define the options of the text:
        var options = {
             size: 10,
             height: 1,
@@ -253,6 +259,7 @@
             steps: 1
           };
 
+// define text "PIXAR":
           var text = new THREE.Object3D();
           console.log(THREE.FontUtils.faces);
           text1 = createMesh(new THREE.TextGeometry("P", options));
@@ -287,7 +294,7 @@ function createMesh(geom) {
         return plane;
       }
      
-      //define animations
+      //define animations with keyframes:
       var animator = null;
       var animator2 = null;
       var animator3 = null;
@@ -297,22 +304,26 @@ function createMesh(geom) {
       var animator7 = null;
       var animator8 = null;
       var animator9 = null;
-      var duration = 8; // sec
+      var animator10 = null;
+      var animator11 = null;
+      var duration = 6; // sec
       var loopAnimation = false;
 
       function initAnimator() {
+      // animation to move the lamp on the x-axis:
         animator = new KF.KeyFrameAnimator;
         animator.init({ 
           interps:
             [
               { 
-                keys:[0, .1, .2, .3, .4,.6], 
+                keys:[0, .1, .2, .3, .4,.5,.6], 
                 values:[
                   { x : -30  },
                   { x : -18.75  },
                   { x : -7.5 },
                   { x : 3.75 },
                   { x : 13 },
+                  { x: 15},
                   {x : 23.5}
                 ],
                 target:base.position
@@ -321,6 +332,7 @@ function createMesh(geom) {
           loop: loopAnimation,
           duration: duration * 1000
         });
+      // animation to move lamp in the z-axis:
         animator9 = new KF.KeyFrameAnimator;
         animator9.init({ 
           interps:
@@ -338,18 +350,20 @@ function createMesh(geom) {
           loop: loopAnimation,
           duration: duration * 1000
         });
+      // animation to rotate the base of the lamp:
         animator2 = new KF.KeyFrameAnimator;
         animator2.init({ 
           interps:
             [
               { 
-                keys:[0, .1, .2, .3, .4,.6], 
+                keys:[0, .1, .2, .3, .4,.5,.6], 
                 values:[
                   { z : -0.5 },
                   { z : 0.5  },
                   { z : -0.5 },
                   { z : 0.5 },
                   { z : -0.5 },
+                  {z : 0.5},
                   {z:0}
                 ],
                 target:base.rotation
@@ -358,18 +372,25 @@ function createMesh(geom) {
           loop: loopAnimation,
           duration: duration * 1000
         });
+      // animation to move the lamp on the y-axis:
         animator3 = new KF.KeyFrameAnimator;
         animator3.init({ 
           interps:
             [
               { 
-                keys:[0, .1, .2, .3, .4,.6,.7,.8], 
+                keys:[0, .05, .1, .15, .2, .25, .3,.35, .4, .45, .5,.6,.7,.8], 
                 values:[
                   { y : 2  },
                   { y : 0  },
                   { y : 2 },
                   { y : 0 },
                   { y : 2 },
+                  { y: 0},
+                  { y: 2},
+                  { y: 0},
+                  { y: 2},
+                  { y: 0},
+                  { y: 2},
                   {y:20},
                   {y:10},
                   {y:hbase/2}
@@ -380,7 +401,7 @@ function createMesh(geom) {
           loop: loopAnimation,
           duration: duration * 1000
         });
-
+      // animation to scaling letter "I" in hight:
         animator4 = new KF.KeyFrameAnimator;
         animator4.init({ 
           interps:
@@ -398,7 +419,7 @@ function createMesh(geom) {
           loop: loopAnimation,
           duration: duration * 1000
         });
-
+      // animation to rotate the first arm of the lamp:
         animator5 = new KF.KeyFrameAnimator;
         animator5.init({ 
           interps:
@@ -422,6 +443,7 @@ function createMesh(geom) {
           loop: loopAnimation,
           duration: duration * 1000
         });
+       // animation to rotate the first arm-hook of the lamp: 
         animator6 = new KF.KeyFrameAnimator;
         animator6.init({ 
           interps:
@@ -445,6 +467,7 @@ function createMesh(geom) {
           loop: loopAnimation,
           duration: duration * 1000
         });
+      // animation to rotate the secondo arm-hook of the lamp:
         animator7 = new KF.KeyFrameAnimator;
         animator7.init({ 
           interps:
@@ -468,6 +491,7 @@ function createMesh(geom) {
           loop: loopAnimation,
           duration: duration * 1000
         });
+      // animation to rotate the second arm of the lamp:
         animator8 = new KF.KeyFrameAnimator;
         animator8.init({ 
           interps:
@@ -485,6 +509,43 @@ function createMesh(geom) {
           loop: loopAnimation,
           duration: duration * 1000
         });
+      // animation to scaling letter "I" in length:
+        animator10 = new KF.KeyFrameAnimator;
+        animator10.init({ 
+          interps:
+            [
+              { 
+                keys:[0, .7,.8], 
+                values:[
+                  { x : 1  },
+                  {x:1},
+                  { x : 2 },
+                  ],
+                target:text3.scale
+              },
+            ],
+          loop: loopAnimation,
+          duration: duration * 1000
+        });
+      // animation to scaling letter "I" in width:
+        animator11 = new KF.KeyFrameAnimator;
+        animator11.init({ 
+          interps:
+            [
+              { 
+                keys:[0, .7,.8], 
+                values:[
+                  { z : 1  },
+                  {z:1},
+                  { z : 2 },
+                  ],
+                target:text3.scale
+              },
+            ],
+          loop: loopAnimation,
+          duration: duration * 1000
+        });
+
       };
 
       initAnimator();
@@ -494,6 +555,7 @@ function createMesh(geom) {
       $('body').append(renderer.domElement);
 
       render();
+// add control to start animation:
       gui.add(controls,"animation").onChange(function(e){
         if (e)
         {
@@ -515,10 +577,23 @@ function createMesh(geom) {
           animator6.start();
           animator7.start();
           animator8.start();
+          animator10.start();
+          animator11.start();
    
         }
         else
         {
+          animator.stop();
+          animator9.stop();
+          animator2.stop();
+          animator3.stop();
+          animator4.stop();
+          animator5.stop();
+          animator6.stop();
+          animator7.stop();
+          animator8.stop();
+          animator10.stop();
+          animator11.stop();
           text.remove(text3);
           base.hook.rotation.y = controls.alfa;
           base.rotation.x = 0;
@@ -532,8 +607,6 @@ function createMesh(geom) {
           base.position.set(23.5,hbase/2,0);
         }
       })
- //     animator.start();
-  //    animator2.start();
 
       function render() {
         stats.update();
@@ -547,7 +620,7 @@ function createMesh(geom) {
       }
       function initStats() {
         var stats = new Stats();
-        stats.setMode(0); // 0: fps, 1: ms
+        stats.setMode(0);
         $('body').append(stats.domElement);
         return stats;
       }
