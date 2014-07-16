@@ -89,7 +89,7 @@ function create_lamp(sx,sy,sz)
       light.distance = 100;
       light.angle = 0.75;
       light.exponent = 30;
-      light.intensity = 10;
+      light.intensity = 0;
       light.castShadow = true;
       
       light.shadowCameraNear = 2;
@@ -107,7 +107,7 @@ function create_lamp(sx,sy,sz)
       base.rotation.y = Math.PI/2;
       base.scale.set(sx,sy,sz);
       base.light = light;
-      base.isOn = true;
+      base.isOn = false;
       base.interact = function()
       {
         if(this.isOn)

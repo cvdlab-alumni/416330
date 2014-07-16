@@ -113,14 +113,14 @@
         this.FPCamera = startFP;
         this.ChangePanorama = changePanorama;
         this.snow = false;
-        this.tetto = false;
+        this.roof = false;
       };
       var gui = new dat.GUI();
 
 
       gui.add(options, "FPCamera");
       gui.add(options,"ChangePanorama");
-      gui.add(options, "tetto").onChange(function(e)
+      gui.add(options, "roof").onChange(function(e)
         {
           this.tetto = e;
           if(this.tetto)
