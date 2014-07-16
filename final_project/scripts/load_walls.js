@@ -3,20 +3,19 @@ function load_walls()
       var walls = new THREE.Object3D();
       var wall = new THREE.Object3D();
       // muri del salone:
-      wall = createPicture(4.7,3.0,0.005,"sala_wall.jpg",false,1,1);
-      wall.rotation.x = Math.PI/2;
-      wall.position.set(6.45,1.6,0.2025);
+      var vertex = [0,0,4.7,0,4.7,3,0,3,0,0];
+      var holes = new Array();
+      wall = createShapeGeometry(vertex,holes,0.005,"sala_wall.jpg",false,1,1);
+      wall.position.set(4.1,0.1,0.2);
       walls.add(wall);
 
-      wall = createPicture(4.7,3.0,0.005,"sala_wall.jpg",false,1,1);
-      wall.rotation.x = -Math.PI/2;
-      wall.position.set(6.45,1.6,3.9);
+      wall = createShapeGeometry(vertex,holes,0.005,"sala_wall.jpg",false,1,1);
+      wall.position.set(4.1,0.1,3.895);
       walls.add(wall);
 
-      var vertex;
       vertex = [0,0,0,3,3.7,3,3.7,0,0,0];
       var hole = [0.4,0,1.4,0,1.4,2,0.4,2,0.4,0.4];
-      var holes = new Array();
+      holes = new Array();
       holes.push(hole);
       wall = createShapeGeometry(vertex,holes,0.005,"sala_wall.jpg",false,1,1);
       wall.rotation.y = Math.PI/2;
@@ -328,7 +327,7 @@ function load_walls()
       walls.add(wall);
 
       vertex = [0,0,3.9,0,3.9,3.1,0,3.1,0,0];    
-      hole = [1.6,1,3.1,1,3.1,2.5,1.6,2.5,1.6,1];
+      hole = [1.6,1.1,3.1,1.1,3.1,2.6,1.6,2.6,1.6,1];
       holes = new Array();
       holes.push(hole);
       hole = [0.5,0,1.3,0,1.3,2.5,0.5,2.5,0.5,0];

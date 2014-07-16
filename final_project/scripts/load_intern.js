@@ -108,32 +108,32 @@ function load_accessory(sx,sy,sz)
     wardrobe.rotation.y = -Math.PI/2;
     wardrobe.position.set(7*sx,1.45*sy,7.695*sz);
 
-    var w_machine = load_model("/washing_machine/dryer_machine",0.01*sx,0.01*sy,0.01*sz,0xffffff);
+    var w_machine = load_model("/washing_machine/dryer_machine",0.01*sx,0.01*sy,0.01*sz);
     w_machine.position.set(1.7*sx,0.45*sy,7.2*sz);
 
-    var table = load_model("/table/Table",4*sx,2.5*sy,4*sz,0xffffff);
+    var table = load_model("/table/Table",4*sx,2.5*sy,4*sz);
     table.position.set(6.5*sx,0.3*sy,1*sz);
 
 
-    var shower = load_model("/shower/bath",0.3*sx,0.4*sy,0.2*sz,0xffffff);
+    var shower = load_model("/shower/bath",0.3*sx,0.4*sy,0.2*sz);
     shower.position.set(2*sx,1.3*sy,8.65*sz);
 
 
-    var laptop = load_model("/laptop/apple-ibook-2001",0.5*sx,0.5*sy,0.5*sz,0xffffff);
+    var laptop = load_model("/laptop/apple-ibook-2001",0.5*sx,0.5*sy,0.5*sz);
     laptop.position.set(5.5*sx,0.82*sy,7.65*sz);
     laptop.rotation.y = Math.PI;
 
-    var chair = load_model("/chair/officeChair2",0.01*sx,0.01*sy,0.01*sz,0xffffff);
+    var chair = load_model("/chair/officeChair2",0.01*sx,0.01*sy,0.01*sz);
     chair.position.set(5.3*sx,0.15*sy,6.8*sz);
 
 
-    var tv = load_model("/tv/tv",0.3*sx,0.3*sy,0.3*sz,0xffffff);
+    var tv = load_model("/tv/tv",0.3*sx,0.3*sy,0.3*sz);
     tv.rotation.y = Math.PI/2;
     tv.position.set(6.5*sx,0.98*sy,0.9*sz);
 
     	// create the video element
 var	video = document.createElement( 'video' );
-	video.src = "scripts/videos/Roma-Parma.ogv";
+	video.src = "scripts/videos/transformers4trailer.ogv";
 	video.load(); 
 //	video.play();
     var videotexture = new THREE.Texture(video);
@@ -143,7 +143,7 @@ var	video = document.createElement( 'video' );
     videotexture.generateMipmaps = false;
   
   var movieMaterial = new THREE.MeshBasicMaterial( { map: videotexture} );
-  var movieGeometry = new THREE.PlaneGeometry( 1.4, 0.77, 4, 4 );
+  var movieGeometry = new THREE.PlaneGeometry( 1.4, 0.73, 4, 4 );
   var movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
   movieScreen.position.set(6.5*sx,1.03*sy,0.94*sz);
   movieScreen.isOn = false;
@@ -168,41 +168,37 @@ var	video = document.createElement( 'video' );
   oggetti.push(movieScreen);
  
 
-    var wc = load_model("/wc/wc",0.15*sx,0.2*sy,0.2*sz,0xffffff);
+    var wc = load_model("/wc/wc",0.15*sx,0.2*sy,0.2*sz);
     wc.rotation.y = -Math.PI/2;
     wc.position.set(2.9*sx,0.1*sy,7.2*sz);
 
-    var sofa = load_model("/sofa/largeCouch",0.3*sx,0.3*sy,0.3*sz,0xffffff);
+    var sofa = load_model("/sofa/largeCouch",0.3*sx,0.3*sy,0.3*sz);
     sofa.rotation.y = Math.PI;
     sofa.position.set(6*sx,0.45*sy,8.895*sz);
     
-    var bed = load_model("/bed/bed",1.15*sx,1*sy,1*sz,0xffffff);
+    var bed = load_model("/bed/bed",1.15*sx,1*sy,1*sz);
     bed.position.set(5.2*sx,0.6*sy,4.8*sz);
     bed.rotation.y = Math.PI;
 
-    var bed2 = load_model("/bed2/bunkBed",0.01*sx,0.01*sy,0.01*sz,0xffffff);
+    var bed2 = load_model("/bed2/bunkBed",0.01*sx,0.01*sy,0.01*sz);
     bed2.position.set(2.8*sx,0.15*sy,10.795*sz);
     bed2.rotation.y = Math.PI;
 
-    var cdrack = load_model("/cdrack/CDrack",0.02*sx,0.02*sy,0.02*sz,0xffffff);  
+    var cdrack = load_model("/cdrack/CDrack",0.02*sx,0.02*sy,0.02*sz);  
     cdrack.position.set(0.5*sx,0.15*sy,5.105*sz);  
 
-    var cook = load_model("/cooker/stove1",0.1*sx,0.1*sy,0.1*sz,0xffffff);
+    var cook = load_model("/cooker/stove1",0.1*sx,0.1*sy,0.1*sz);
     cook.position.set(3*sx,0.65*sy,9.405*sz);
 
-    var plant = load_model("/plant/littlePlant",0.02*sx,0.02*sy,0.02*sz,0xffffff);
+    var plant = load_model("/plant/littlePlant",0.02*sx,0.02*sy,0.02*sz);
     plant.position.set(8.5*sx,0.15*sy,7*sz);
 
-    var freezer = load_model("/refridgerator/refridgerator",sx,sy,sz,0xffffff);
+    var freezer = load_model("/refridgerator/refridgerator",sx,sy,sz);
     freezer.position.set(2.2*sx,0.5*sy,10.795);
     freezer.rotation.y = Math.PI;
     
-      var geometry = new THREE.SphereGeometry(50*sx, 30, 30);
-      var texture = THREE.ImageUtils.loadTexture("scripts/assets/textures/general/panorama.jpg");
-      var material = new THREE.MeshPhongMaterial({ map: texture, side: THREE.BackSide });
-
-      var env = new THREE.Mesh(geometry, material);
-      
+     
+    var lamp = create_lamp(0.03,0.03,0.03);
 
 
 
@@ -241,18 +237,18 @@ var	video = document.createElement( 'video' );
 
       var frame = createPicture(0.6*sx,0.7*sy,0.01*sz,"cornice.jpg","cornice_bump.jpg",1,1);
       frame.rotation.x = Math.PI/2;
-      frame.position.set(6.2*sx,2.2*sy,4.105*sz);
+      frame.position.set(6.2*sx,1.5*sy,4.105*sz);
 
-      var ca = create_cassettiera(1.5*sx,0.7*sy,1.5*sz,"wardrobe_left.jpg","wardrobe.jpg");
+      var ca = create_cassettiera(0.8*sx,0.7*sy,1.5*sz,"cassetto.jpg","cassettiera.jpg");
       ca.rotation.y = -Math.PI/2;
-      ca.position.set(6.75*sx,0.9*sy,10.5*sz);
+      ca.position.set(6.75*sx,0.55*sy,10.5*sz);
 
       
       
       
 
-      var mirror = createMirror(0.5*sx,0.005*sy,0.8*sz);
-      mirror.position.set(3*sx,1.9*sy,2.205*sz);
+      var mirror = createMirror(0.5*sx,0.005*sy,1*sz);
+      mirror.position.set(3*sx,1.4*sy,2.205*sz);
 
       var arredo = new THREE.Object3D();
       arredo.bed_door = bed_door;
@@ -279,8 +275,8 @@ var	video = document.createElement( 'video' );
 
       arredo.add(frame);
       arredo.add(ca);
-      arredo.add(env);
       arredo.add(mirror);
+      arredo.add(lamp);
 
       arredo.add(w_machine);
       arredo.add(bed);
@@ -320,17 +316,14 @@ var	video = document.createElement( 'video' );
 
 
 
- function load_model(model,sx,sy,sz,color)
+ function load_model(model,sx,sy,sz)
  {
    var loader = new THREE.OBJMTLLoader();
    var oggetto = new THREE.Object3D();
-  loader.addEventListener('load', function (event) {
-    var object = event.content;
-      object.scale.set(sx, sy, sz);
-     // object.rotation.x=Math.PI/2;
-    //  object.rotation.y=Math.PI/2;
-  //    object.position.set(5.12,7,1.1);
-     oggetto.add(object); 
+   loader.addEventListener('load', function (event) {
+   var object = event.content;
+   object.scale.set(sx, sy, sz);
+   oggetto.add(object); 
       
   });
  loader.load('scripts/models/'+model+'.obj', 'scripts/models/'+model+'.mtl', {side: THREE.DoubleSide});
@@ -342,12 +335,12 @@ function load_model_nomaterial(model,sx,sy,sz,color)
   var loader = new THREE.OBJLoader();
   var object = new THREE.Object3D();
   loader.load("scripts/models/"+model+".obj", function (obj) {
-      global_o = obj;
-      var material = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide});
-      var o = new THREE.Mesh(obj.children[0].geometry, material);
-      o.scale.set(sx,sy,sz);
+  global_o = obj;
+  var material = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide});
+  var o = new THREE.Mesh(obj.children[0].geometry, material);
+  o.scale.set(sx,sy,sz);
     
-    object.add(o);
+  object.add(o);
 });
   return object;
 }

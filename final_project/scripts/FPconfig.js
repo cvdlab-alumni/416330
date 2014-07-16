@@ -46,14 +46,7 @@
         var sphereMaterial = new THREE.MeshBasicMaterial({color:0xff00ff});
         sphere = new THREE.Mesh(sphereGeometry,sphereMaterial);
 
-        var mirGeometry = new THREE.PlaneGeometry(0.04,0.001);
-        var mirMaterial = new THREE.MeshBasicMaterial({color:0xff00ff});
-        var mir1 = new THREE.Mesh(mirGeometry,mirMaterial);
-        var mir2Geometry = new THREE.PlaneGeometry(0.001,0.04);
-        var mir2 = new THREE.Mesh(mir2Geometry,mirMaterial);
-        var mirino = new THREE.Object3D();
-        mirino.add(mir1);
-        mirino.add(mir2);
+        var mirino = create_mirino();
         mirino.position.set(0,0,-2);
         camera.add(mirino);
 
@@ -93,3 +86,16 @@ function animate() {
         
         controls.update();
       }
+
+function create_mirino()
+{
+    var mirGeometry = new THREE.PlaneGeometry(0.04,0.004);
+    var mirMaterial = new THREE.MeshBasicMaterial({color:0xdddddd});
+    var mir1 = new THREE.Mesh(mirGeometry,mirMaterial);
+    var mir2Geometry = new THREE.PlaneGeometry(0.004,0.04);
+    var mir2 = new THREE.Mesh(mir2Geometry,mirMaterial);
+    var mirino = new THREE.Object3D();
+    mirino.add(mir1);
+    mirino.add(mir2);
+    return mirino;
+}

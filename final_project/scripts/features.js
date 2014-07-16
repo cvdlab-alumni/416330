@@ -215,7 +215,7 @@ function create_interructor(sx,sy,sz)
   var base = new THREE.Mesh(baseGeometry,baseMaterial);
 
   var geometry = new THREE.BoxGeometry(0.05*sx,0.1*sy,0.03*sz);
-  var material = new THREE.MeshLambertMaterial({color:0x000000});
+  var material = new THREE.MeshLambertMaterial({color:0x646464});
   var interruttore = new THREE.Mesh(geometry,material);
   var spotLight1 = new THREE.SpotLight(0xffffff);
   spotLight1.position.set(0,3*sy,0);
@@ -249,7 +249,7 @@ function create_interructor(sx,sy,sz)
   target.position.y = -3*sy;
   
   spotLight1.target = target;
-  var lamp = load_model("/lamp/lamp",2*sx,2*sy,2*sz,0xffffff);
+  var lamp = load_model("/lamp/lamp",2*sx,2*sy,2*sz);
   lamp.rotation.x = Math.PI;
   spotLight1.add(lamp);
   interruttore.position.set(0,0,0.015*sz);
@@ -317,20 +317,17 @@ function create_sportello(h,w,l,left,texture,texture_wardrobe,bump)
   var texture_w = THREE.ImageUtils.loadTexture("scripts/assets/textures/general/" + texture_wardrobe);
   boxGeometry.computeVertexNormals();
   var materialArray = [];
-  materialArray.push(new THREE.MeshPhongMaterial({ map: texture_w }));
-  materialArray.push(new THREE.MeshPhongMaterial({ map: texture_s }));
+  materialArray.push(new THREE.MeshLambertMaterial({ map: texture_w }));
+  materialArray.push(new THREE.MeshLambertMaterial({ map: texture_s }));
 
-  materialArray.push(new THREE.MeshPhongMaterial({ map: texture_w }));
-  materialArray.push(new THREE.MeshPhongMaterial({ map: texture_w }));
+  materialArray.push(new THREE.MeshLambertMaterial({ map: texture_w }));
+  materialArray.push(new THREE.MeshLambertMaterial({ map: texture_w }));
   
-  materialArray.push(new THREE.MeshPhongMaterial({ map: texture_w }));
-  materialArray.push(new THREE.MeshPhongMaterial({ map: texture_w }));
-  materialArray.push(new THREE.MeshPhongMaterial({ map: texture_w }));
+  materialArray.push(new THREE.MeshLambertMaterial({ map: texture_w }));
+  materialArray.push(new THREE.MeshLambertMaterial({ map: texture_w }));
+  materialArray.push(new THREE.MeshLambertMaterial({ map: texture_w }));
 
-  if (bump) {
-    materialArray[1].bumpMap = texture_s;
-    materialArray[1].bumpScale = 0.1;
-}
+  
 var faceMaterial = new THREE.MeshFaceMaterial(materialArray);
 
 var sportello = new THREE.Mesh(boxGeometry, faceMaterial);

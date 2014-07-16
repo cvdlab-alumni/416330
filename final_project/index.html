@@ -40,6 +40,7 @@
   <script src="./scripts/load.js"></script>
   <script src = "./scripts/features.js"></script>
   <script src = "./scripts/FPconfig.js"></script>
+  <script src= "./scripts/lamp.js"></script>
  
   <script>
     $(function () {
@@ -77,11 +78,40 @@
 
   
       trackballControls = new THREE.TrackballControls(camera);
+      var planeGeometry = new THREE.BoxGeometry(1000,0.1,1000,20,20);
+      var planetexture = THREE.ImageUtils.loadTexture("scripts/assets/textures/general/plane.jpg");
+      
+      var planeMaterial = new THREE.MeshPhongMaterial({map:planetexture, side:THREE.BackSide});
+      var plane = new THREE.Mesh(planeGeometry,planeMaterial);
+      plane.position.set(0,0.05,0);
+      scene.add(plane);
 
+      var geometry = new THREE.SphereGeometry(500, 30, 30,0,Math.PI*2,0,Math.PI/2);
+      var texture = THREE.ImageUtils.loadTexture("scripts/assets/textures/general/panorama3.jpg");
+      var material = new THREE.MeshPhongMaterial({ map: texture, side: THREE.BackSide });
+
+      var env = new THREE.Mesh(geometry, material);
+      scene.add(env);
+
+      var cont =2;
+      changePanorama = function()
+      {
+        if(cont === 4)
+        {
+          cont = 1;
+        }
+        scene.remove(env);
+        texture = THREE.ImageUtils.loadTexture("scripts/assets/textures/general/panorama"+cont+".jpg");
+        material = new THREE.MeshPhongMaterial({map:texture, side:THREE.BackSide});
+        env = new THREE.Mesh(geometry,material);
+        scene.add(env);
+        cont++;
+      }
 
       var options = new function(){
 
         this.FPCamera = startFP;
+        this.ChangePanorama = changePanorama;
         this.snow = false;
         this.tetto = false;
       };
@@ -89,6 +119,7 @@
 
 
       gui.add(options, "FPCamera");
+      gui.add(options,"ChangePanorama");
       gui.add(options, "tetto").onChange(function(e)
         {
           this.tetto = e;
