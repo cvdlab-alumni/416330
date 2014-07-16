@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Manuel De Iuliis's final project</title> 
+    <style>
+    
+      body{
+      margin: 0;
+      overflow: hidden;
+    }
+
+ 
+
+    #stats {  
+      position: absolute;
+      left: 0px;
+      top: 0px;
+    }
+</style>
+  </head>
+<body>
+  
+  <script src="./scripts/jquery-2.1.1.js"></script> 
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r67/three.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/stats.js/r11/Stats.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
+  
+  <script src="./scripts/assets/libs/ParticlesEngine.js"></script>
+  <script src="./scripts/assets/libs/TrackballControls.js"></script>
+  <script src="./scripts/assets/libs/OBJLoader.js"></script>
+  <script src="./scripts/assets/libs/tween.min.js"></script>
+  <script type="text/javascript" src="./scripts/assets/libs/MTLLoader.js"></script>
+  <script type="text/javascript" src="./scripts/assets/libs/OBJMTLLoader.js"></script> 
+  <script src="./scripts/assets/libs/PointerLockControls.js"></script>
+  <script src="./scripts/utility.js"></script>
+  <script src="./scripts/particleSnow.js"></script>
+  <script src="./scripts/load_walls.js"></script>
+  <script src="./scripts/load_floors.js"></script>
+  <script src="./scripts/load_intern.js"></script>
+  <script src="./scripts/load.js"></script>
+  <script src = "./scripts/features.js"></script>
+  <script src = "./scripts/FPconfig.js"></script>
+ 
+  <script>
+    $(function () {
+
+      var stats = initStats();
+      var objects = [];
+
+      scene = new THREE.Scene();
+      var light = new THREE.DirectionalLight( 0xffffff, 1.5 );
+        light.position.set( 1, 1, 1 );
+        scene.add( light );
+
+        var light = new THREE.DirectionalLight( 0xffffff, 0.75 );
+        light.position.set( -1, - 0.5, -1 );
+        scene.add( light );
+
+        var axisHelper = new THREE.AxisHelper(3);
+      axisHelper.visible = true;
+      scene.add(axisHelper);
+
+      var clock = new THREE.Clock();
+
+      var renderer = new THREE.WebGLRenderer();
+      renderer.setClearColor(new THREE.Color(0xeeeeee, 1.0));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+
+      camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(-10,50,20);
+
+      
+      home = load_models(2,2,2);   
+       
+      scene.add(home);
+    
+
+  
+      trackballControls = new THREE.TrackballControls(camera);
+
+
+      var options = new function(){
+
+        this.FPCamera = startFP;
+        this.snow = false;
+        this.tetto = false;
+      };
+      var gui = new dat.GUI();
+
+
+      gui.add(options, "FPCamera");
+      gui.add(options, "tetto").onChange(function(e)
+        {
+          this.tetto = e;
+          if(this.tetto)
+          {
+            home.walls.add(home.walls.tetto);
+          }
+          else
+          {
+            home.walls.remove(home.walls.tetto);
+          }
+        });
+      var engine;
+      gui.add(options,"snow").onChange(function(e)
+        {
+          this.snow = e;
+          if(this.snow)
+          {
+            engine = new ParticleEngine();
+            engine.setValues( Types.snow );
+            var particles = engine.initialize();
+            scene.add(particles);
+          }
+          else
+          {
+            engine.destroy();
+          }
+        });
+      
+      
+      var projector = new THREE.Projector();
+      render();
+
+      var tube;
+      var mouseVector = new THREE.Vector3();
+
+      window.addEventListener( 'resize', onWindowResize, false );
+      
+
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+      }
+      
+      document.addEventListener('mousedown', onDocumentMouseDown, false);
+
+      function onDocumentMouseDown(event) {
+            event.preventDefault();
+            if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
+              var vector = new THREE.Vector3(0, 0, 2);
+              projector.unprojectVector(vector, camera);
+              var raycaster = new THREE.Raycaster(vector,controls.getDirection(new THREE.Vector3(0, 0, 0)).clone());
+           } else {
+              var vector = new THREE.Vector3(( event.clientX / window.innerWidth ) * 2 - 1, -( event.clientY / window.innerHeight ) * 2 + 1, 0.5);
+                  projector.unprojectVector(vector, camera);
+
+                  var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+                  var intersects = raycaster.intersectObjects(oggetti);
+            }
+            var intersects = raycaster.intersectObjects(oggetti);
+            if (intersects.length > 0) 
+            {
+              intersects[0].object.interact();
+            }
+          }
+
+      function render() {
+  
+        stats.update();
+        TWEEN.update();
+        if(FPdisabled)
+        {
+          trackballControls.update();
+        }
+        else
+        {
+          animate();
+        }
+
+        home.arredo.mirror.visible = false;
+        home.arredo.mirror.camera.updateCubeMap( renderer, scene );
+        home.arredo.mirror.visible = true;
+
+        
+        if (home.arredo.movieScreen.video.readyState === home.arredo.movieScreen.video.HAVE_ENOUGH_DATA) {
+              if (home.arredo.videoTexture) home.arredo.videoTexture.needsUpdate = true;
+          }
+
+        if(options.snow)
+        {
+          var dt = clock.getDelta();
+          engine.update( dt * 0.5 );
+        }  
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(render);
+      }
+
+
+       $('body').append(renderer.domElement);
+
+      function initStats() {
+        var stats = new Stats();
+        stats.setMode(0); // 0: fps, 1: ms
+        $('body').append(stats.domElement);
+        return stats;
+      }
+    });
+  </script>  
+ </body>
+</html>
