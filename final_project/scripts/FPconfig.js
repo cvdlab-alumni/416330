@@ -1,40 +1,39 @@
  var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
 
+  if ( havePointerLock ) {
+  var element = document.body;
+  var pointerlockchange = function ( event ) {
 
-      if ( havePointerLock ) {
-        var element = document.body;
-        var pointerlockchange = function ( event ) {
+    if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
+      controls.enabled = true;
+      controls.getObject().position.set(0, 0, 0);
+      
+    } else {
+      controls.enabled = false;
+      
+    }
+  }
 
-          if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
-            controls.enabled = true;
-            controls.getObject().position.set(0, 0, 0);
-            
-          } else {
-            controls.enabled = false;
-            
-          }
-        }
+  var pointerlockerror = function ( event ) {
+    instructions.style.display = '';
+  }
 
-        var pointerlockerror = function ( event ) {
-          instructions.style.display = '';
-        }
+  // Hook pointer lock state change events
+  document.addEventListener( 'pointerlockchange', pointerlockchange, false );
+  document.addEventListener( 'mozpointerlockchange', pointerlockchange, false );
+  document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false );
 
-        // Hook pointer lock state change events
-        document.addEventListener( 'pointerlockchange', pointerlockchange, false );
-        document.addEventListener( 'mozpointerlockchange', pointerlockchange, false );
-        document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false );
+  document.addEventListener( 'pointerlockerror', pointerlockerror, false );
+  document.addEventListener( 'mozpointerlockerror', pointerlockerror, false );
+  document.addEventListener( 'webkitpointerlockerror', pointerlockerror, false );
 
-        document.addEventListener( 'pointerlockerror', pointerlockerror, false );
-        document.addEventListener( 'mozpointerlockerror', pointerlockerror, false );
-        document.addEventListener( 'webkitpointerlockerror', pointerlockerror, false );
-
-        
-      } else {
-        instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
-      }
+  
+} else {
+  instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
+}
 
      
-      var sphere;
+ var sphere;
       
  var startFP = function () 
       {

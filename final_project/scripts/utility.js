@@ -76,9 +76,6 @@ function createShapeGeometry(vertex,holes,extrusion,texture,texture_bump,repx,re
         myMaterial.bumpScale = 0.1;
       }
 
-
-        
-
-        var myMesh = new THREE.Mesh(geometry, myMaterial);
-        return myMesh;
+      var myMesh = new THREE.Mesh(geometry, myMaterial);
+      return myMesh;
  }
