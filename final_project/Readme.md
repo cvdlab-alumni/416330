@@ -24,7 +24,7 @@ Link to project : [project](http://reveirg89.github.io/)
 
 
 ## Graphic Techniques used:
-- Textures;
+- Texture;
 - Bump map;
 - Trackball controls;
 - Normal camera;
@@ -39,6 +39,7 @@ Link to project : [project](http://reveirg89.github.io/)
 - Animation using tween.js to open/close doors, windows and drawers, turn on/off lights in every room,;
 - Spotlights;
 - Directional lights;
+- Shape geometry;
 
 
 ## Gui Controls:
