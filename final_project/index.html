@@ -83,7 +83,7 @@
       
       var planeMaterial = new THREE.MeshPhongMaterial({map:planetexture, side:THREE.BackSide});
       var plane = new THREE.Mesh(planeGeometry,planeMaterial);
-      plane.position.set(0,-0.05,0);
+      plane.position.set(0,-0.1,0);
       scene.add(plane);
 
       var geometry = new THREE.SphereGeometry(500, 30, 30,0,Math.PI*2,0,Math.PI/2);
